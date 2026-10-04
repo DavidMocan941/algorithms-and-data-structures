@@ -1,9 +1,24 @@
 package exercices.dsa;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TakeNotTakePattern {
     public static void main(String[] args) {
+        //findSubsequencesWithSumK(new int[]{1, 2, 3, 4, 5, 6, 7, 8}, new ArrayList<>(), 30, 0, 0);
+        List<List<Integer>> combinationsSum = combinationSum(new int[]{1, 2, 3, 4, 5}, 5);
+        //for (List<Integer> combinationSum : combinationsSum) {
+        //for (int value : combinationSum) {
+        //  System.out.print(value);
+        // }
+        // System.out.println();
+        // }
+        combinationsSum.stream().forEach(list -> {
+            list.stream().forEach(val -> {
+                System.out.print(val + " ");
+            });
+            System.out.println();
+        });
 
     }
 
@@ -59,8 +74,27 @@ public class TakeNotTakePattern {
         return false;
     }
 
-    public static void findCombinationsToSumTarget(){// array = 1 2 3 4 5 6 7 8    target = 7
-                            //ds = {1,1,1,1,1,1,1}   sum=7
+    public static List<List<Integer>> combinationSum(int[] candidates, int target) {
+        List<List<Integer>> combinations = new ArrayList<>();
+        findCombinationsToSumTarget(0, candidates, target, new ArrayList<>(), combinations);
+        return combinations;
     }
 
+    public static void findCombinationsToSumTarget(int index, int[] array, int target, List<Integer> combination, List<List<Integer>> combinations) {
+        int n = array.length;
+
+        if (target == 0) {
+            combinations.add(new ArrayList<>(combination));
+            return;
+        }
+        if (index == n) {
+            return;
+        }
+        if (target >= array[index]) {
+            combination.add(array[index]);
+            findCombinationsToSumTarget(index, array, target - array[index], combination, combinations);
+            combination.remove(combination.size() - 1);
+        }
+        findCombinationsToSumTarget(index + 1, array, target, combination, combinations);
+    }
 }
